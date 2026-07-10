@@ -1,0 +1,15 @@
+{
+  "title": "Thử thách Bảng cửu chương 2 cùng Khỉ Tinh Nghịch",
+  "questions": [
+    {
+      "question": "2 x 3 = ?",
+      "choices": ["5", "6", "7", "8"],
+      "answer": 1
+    },
+    {
+      "question": "2 x 5 = ?",
+      "choices": ["9", "10", "11", "12"],
+      "answer": 1
+    }
+  ]
+}
