@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vũ trụ học tập Cô Như Ý</title>
+    <style>
+        :root { --cam: #FF9F1C; --xanh: #118AB2; --trang: #FFFFFF; }
+        body { background: var(--xanh); font-family: 'Arial', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        #hcny-universe { width: 90vw; max-width: 600px; background: var(--trang); padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; }
+        .btn-dapan { width: 100%; padding: 15px; margin: 10px 0; font-size: 18px; font-weight: bold; background: #E0F2FE; color: #0369A1; border: none; border-radius: 12px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 0 #0284C7; }
+        .btn-dapan:hover { background: #BAE6FD; }
+        #cau-hoi { font-size: 24px; font-weight: bold; padding: 20px; background: #F8F9FA; border-radius: 15px; border: 3px dashed var(--cam); margin-bottom: 20px; }
+        #tieude { color: var(--xanh); font-size: 22px; font-weight: bold; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div id="hcny-universe">
+    <div id="tieude">🚀 Đang tải Vũ trụ học tập...</div>
+    <div id="content-box">
+        <div id="cau-hoi">Đang nạp câu hỏi...</div>
+        <div id="danh-sach-dapan"></div>
+    </div>
+</div>
+
+<script>
+    // BỘ NÃO TỰ ĐỘNG ĐỌC DỮ LIỆU JSON
+    let gameData = null;
+    let currentQuestionIndex = 0;
+
+    // Tự đọc file cuuchuong2.json trong thư mục data
+    fetch('data/cuuchuong2.json')
+        .then(response => response.json())
+        .then(data => {
+            gameData = data;
+            document.getElementById('tieude').innerText = gameData.title;
+            hienCauHoi();
+        })
+        .catch(err => {
+            document.getElementById('cau-hoi').innerText = "❌ Không tìm thấy file câu hỏi trong thư mục data!";
+        });
+
+    function hienCauHoi() {
+        let currentQ = gameData.questions[currentQuestionIndex];
+        document.getElementById('cau-hoi').innerText = currentQ.question;
+        
+        let dapanBox = document.getElementById('danh-sach-dapan');
+        dapanBox.innerHTML = ''; // Xóa đáp án cũ
+        
+        currentQ.choices.forEach((choice, index) => {
+            let button = document.createElement('button');
+            button.className = 'btn-dapan';
+            button.innerText = choice;
+            button.onclick = () => kiemTraDapan(index, currentQ.answer);
+            dapanBox.appendChild(button);
+        });
+    }
+
+    function kiemTraDapan(viTriChon, viTriDung) {
+        if(viTriChon === viTriDung) {
+            alert("✨ Xuất sắc quá bạn nhỏ ơi! Đúng rồi!");
+        } else {
+            alert("💥 Chưa chính xác rồi, thử lại xem nhé!");
+        }
+        
+        currentQuestionIndex++;
+        if(currentQuestionIndex < gameData.questions.length) {
+            hienCauHoi();
+        } else {
+            document.getElementById('content-box').innerHTML = "<h2 style='color:#06D6A0;'>🎉 Chúc mừng bạn nhỏ đã hoàn thành bài học! Xuất sắc nhận Cúp Vàng!</h2>";
+        }
+    }
+</script>
+</body>
+</html>
